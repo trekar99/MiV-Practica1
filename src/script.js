@@ -3,7 +3,6 @@ JSC.defaults({ baseUrl: './js/jsc/dist' });
 export default JSC;
 
 var chart, data, selectedCountry; 
-var palette = ['#b4ddba', '#42A5F5', '#1565C0']; 
 
 JSC.fetch('/maps/worldcities.csv') 
   .then(function(response) { return response.text(); }) 
@@ -13,8 +12,9 @@ JSC.fetch('/maps/worldcities.csv')
 function renderChart() { 
     return JSC.chart('chartDiv', { 
       debug: true, 
-      type: 'map solid', 
+      type: 'map', 
       legend_visible: false, 
+      mapping_projection: false,
       annotations: [ 
         { 
           position: 'top left', 
@@ -26,7 +26,7 @@ function renderChart() {
       ], 
       events_pointSelectionChanged: selectionChanged, 
       defaultSeries: { pointSelection: true }, 
-      defaultPoint_color: palette[0], 
+      // defaultPoint_color: palette[0], 
       defaultAnnotation: { asHTML: true, margin: 2 }, 
       annotations: [ 
         { 
@@ -39,7 +39,20 @@ function renderChart() {
         { map: 'europe' }, 
         { map: 'asia' }, 
         { map: 'oceania' }, 
-        { map: 'africa' } 
+        { map: 'africa',
+          palette: JSC.colorToPalette( 
+            'rgb(251, 204, 155)', 
+            { 
+              hue: 0.1, 
+              saturation: 0.4, 
+              lightness: 0.3 
+            }, 
+            200, 
+            1 
+          ), 
+          opacity: 0.8, 
+          defaultPoint: {} 
+        } 
       ], 
       toolbar_items: { 
         resetZoom_visible: false, 
@@ -57,14 +70,7 @@ function renderChart() {
         fill: { image: '/tacos.jpg' },
         opacity: 0.1
       },
-      // palette: {
-      //   pointValue: function(point) {
-      //     console.log(point.options('z'))
-      //     return point.options('z');
-      //   },
-      //   colors: ['#ffffe5', '#fff7bc', '#fee391', '#fec44f', '#ec7014', '#cc4c02', '#993404', '#662506'],
-      //   colorBar: { width: 16, axis_formatString: 'c0' }
-      // }
+      
     }); 
 }   
 
@@ -88,6 +94,11 @@ function renderChart() {
       } 
     
       var citiesSeries = { 
+        palette: {
+          pointValue: function(point) { return point.options('z'); },
+          colors: ['#ffffe5', '#fff7bc', '#fee391', '#fec44f', '#ec7014', '#cc4c02', '#993404', '#662506'],
+          colorBar: { width: 16, axis_formatString: 'c0' }
+        },
         type: 'bubble', 
         id: seriesId, 
         pointSelection: false, 
@@ -103,7 +114,7 @@ function renderChart() {
             events_click: function() { return false; }, 
             cursor: 'default', 
             opacity: isCapital ? 1 : 0.8, 
-            color: isCapital ? palette[2] : palette[1], 
+            color: isCapital ? '#1565C0' : null, 
             tooltip: isCapital ? '%name (Capital)<br>Population: <b>%zValue</b>' : '%name<br>Population: <b>%zValue</b>' 
           }; 
         }) 
@@ -133,21 +144,3 @@ function clearSelection() {
       .uiItems('Clear') 
       .options({ visible: false }); 
   } 
-
-
-  function makeSeries(map, data) {
-    var series = [
-      {
-        points: data.map(function(item) {
-          return {
-            map,
-            rango: parseFloat(item.personal_income_2020)
-          };
-        })
-      }
-    ];
-    return series;
-  }
-
-
-
