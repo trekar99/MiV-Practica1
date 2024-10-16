@@ -11,7 +11,7 @@ JSC.fetch('/maps/worldcities.csv')
   
 function renderChart() { 
     return JSC.chart('chartDiv', { 
-      debug: true, 
+      // debug: true, 
       type: 'map solid', 
       legend_visible: false, 
       mapping_projection: false,
