@@ -12,7 +12,7 @@ JSC.fetch('/maps/worldcities.csv')
 function renderChart() { 
     return JSC.chart('chartDiv', { 
       debug: true, 
-      type: 'map', 
+      type: 'map solid', 
       legend_visible: false, 
       mapping_projection: false,
       annotations: [ 
@@ -26,7 +26,7 @@ function renderChart() {
       ], 
       events_pointSelectionChanged: selectionChanged, 
       defaultSeries: { pointSelection: true }, 
-      // defaultPoint_color: palette[0], 
+      defaultSeries_color: '#EAE6CA', 
       defaultAnnotation: { asHTML: true, margin: 2 }, 
       annotations: [ 
         { 
@@ -39,20 +39,7 @@ function renderChart() {
         { map: 'europe' }, 
         { map: 'asia' }, 
         { map: 'oceania' }, 
-        { map: 'africa',
-          palette: JSC.colorToPalette( 
-            'rgb(251, 204, 155)', 
-            { 
-              hue: 0.1, 
-              saturation: 0.4, 
-              lightness: 0.3 
-            }, 
-            200, 
-            1 
-          ), 
-          opacity: 0.8, 
-          defaultPoint: {} 
-        } 
+        { map: 'africa' } 
       ], 
       toolbar_items: { 
         resetZoom_visible: false, 
@@ -66,10 +53,10 @@ function renderChart() {
           events_click: clearSelection 
         } 
       },
-      chartArea: {
-        fill: { image: '/tacos.jpg' },
-        opacity: 0.1
-      },
+      // chartArea: {
+      //   fill: { image: '/tacos.jpg' },
+      //   opacity: 0.1
+      // },
       
     }); 
 }   
@@ -92,18 +79,22 @@ function renderChart() {
         var averagePopulation = JSC.mean(data, 'population'); 
         countryData = countryData.filter(function(v) { return v.population >= averagePopulation; }).slice(0, 100); 
       } 
-    
+     
       var citiesSeries = { 
         palette: {
           pointValue: function(point) { return point.options('z'); },
-          colors: ['#ffffe5', '#fff7bc', '#fee391', '#fec44f', '#ec7014', '#cc4c02', '#993404', '#662506'],
+          colors: ['#C8E4BF', '#B5D9AF', '#9CC48E', '#83AD6D', '#6BA64C', '#53A32B', '#3AA00A', '#229D00', '#0DA400', '#00AD00',
+'#00B500', '#00C200', '#00CF00', '#00DB00', '#00E800', '#F0E800', '#F0D100', '#F0B400', '#F09700', '#F07A00',
+'#F06300', '#F04600', '#F02900', '#F00C00', '#EF0000', '#DE0000', '#CE0000', '#BE0000', '#AE0000', '#9E0000'],
           colorBar: { width: 16, axis_formatString: 'c0' }
         },
         type: 'bubble', 
         id: seriesId, 
         pointSelection: false, 
-        size: [5, 100], // Tamaño Burbujas 
-        defaultPoint: { opacity: 0.2, outline: { width: 1, color: 'lighten' } }, 
+        size: [30, 120], // Tamaño Burbujas 
+        // defaultPoint: {
+        //   fill: ["currentColor", "white", 90]
+        // },
         points: countryData.map(function(item) { 
           var isCapital = item.capital === 'primary'; 
           return { 
@@ -113,8 +104,9 @@ function renderChart() {
             z: item.population, 
             events_click: function() { return false; }, 
             cursor: 'default', 
-            opacity: isCapital ? 1 : 0.8, 
-            color: isCapital ? '#1565C0' : null, 
+            // opacity: isCapital ? 1 : 0.5, 
+            // color: isCapital ? '#1565C0' : null, 
+            shape_fill: isCapital ? ["currentColor", "white", 90] : null,
             tooltip: isCapital ? '%name (Capital)<br>Population: <b>%zValue</b>' : '%name<br>Population: <b>%zValue</b>' 
           }; 
         }) 
