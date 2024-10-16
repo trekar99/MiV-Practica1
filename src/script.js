@@ -1,6 +1,6 @@
 import * as JSC from 'jscharting'
-JSC.defaults({ baseUrl: './js/jsc/dist' });
-export default JSC;
+// JSC.defaults({ baseUrl: './js/jsc/dist' });
+// export default JSC;
 
 var chart, data, selectedCountry; 
 
