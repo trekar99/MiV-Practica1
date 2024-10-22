@@ -12,6 +12,14 @@ JSC.fetch('/maps/worldcities.csv')
 function renderChart() { 
     return JSC.chart('chartDiv', { 
       // debug: true, 
+      title: { 
+        position: 'center', 
+        label: { 
+          text: 
+            'Top 100 Most Populated Cities by Country', 
+          style_fontSize: 16 
+        } 
+      }, 
       type: 'map solid', 
       legend_visible: false, 
       mapping_projection: false,
