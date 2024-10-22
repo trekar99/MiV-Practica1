@@ -26,12 +26,12 @@ function renderChart() {
       ], 
       events_pointSelectionChanged: selectionChanged, 
       defaultSeries: { pointSelection: true }, 
-      defaultSeries_color: '#EAE6CA', 
-      defaultAnnotation: { asHTML: true, margin: 2 }, 
+      defaultSeries_color: '#A0DFF8', 
+      defaultAnnotation: { asHTML: true, margin: 0 }, 
       annotations: [ 
         { 
           label_text: '', 
-          position: 'left'
+          position: 'center'
         } 
       ], 
       series: [ 
@@ -53,10 +53,10 @@ function renderChart() {
           events_click: clearSelection 
         } 
       },
-      // chartArea: {
-      //   fill: { image: '/tacos.jpg' },
-      //   opacity: 0.1
-      // },
+      chartArea: {
+        fill: { image: '/foto.jpg' },
+        opacity: 0.1
+      },
       
     }); 
 }   
@@ -83,10 +83,13 @@ function renderChart() {
       var citiesSeries = { 
         palette: {
           pointValue: function(point) { return point.options('z'); },
-          colors: ['#C8E4BF', '#B5D9AF', '#9CC48E', '#83AD6D', '#6BA64C', '#53A32B', '#3AA00A', '#229D00', '#0DA400', '#00AD00',
-'#00B500', '#00C200', '#00CF00', '#00DB00', '#00E800', '#F0E800', '#F0D100', '#F0B400', '#F09700', '#F07A00',
-'#F06300', '#F04600', '#F02900', '#F00C00', '#EF0000', '#DE0000', '#CE0000', '#BE0000', '#AE0000', '#9E0000'],
-          colorBar: { width: 16, axis_formatString: 'c0' }
+          // colors: ['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0',
+          //   '#225ea8', '#253494', '#081d58'
+          // ],
+          // colors: ['#d1eeea', '#a8dbd9', '#85c4c9', '#68abb8', '#4f90a6', '#3b738f', '#2a5674']
+          // colors: ['#b0f2bc', '#89e8ac', '#67dba5', '#4cc8a3', '#38b2a3', '#2c98a0', '#257d98']
+          colors: ['#f3e0f7','#e4c7f1','#d1afe8','#b998dd','#9f82ce','#826dba','#63589f'],
+          // colorBar: { width: 30, axis_formatString: 'c0' }
         },
         type: 'bubble', 
         id: seriesId, 
